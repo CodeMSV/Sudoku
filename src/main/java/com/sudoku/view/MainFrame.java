@@ -55,19 +55,33 @@ public class MainFrame extends JFrame {
         top.add(solveBtn);
         add(top, BorderLayout.NORTH);
 
-        boardPanel.setLayout(new GridLayout(9, 9, 2, 2));
+        // Board panel
+        final int GAP_INNER = 2;
+        final int GAP_BLOCK = 10;
+
+        boardPanel.setLayout(new GridLayout(3, 3, GAP_BLOCK, GAP_BLOCK));
         boardPanel.setBorder(new EmptyBorder(12, 12, 12, 12));
         boardPanel.setBackground(BOARD_BG);
 
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-                JTextField cell = createCell(row, col);
-                cells[row][col] = cell;
-                boardPanel.add(cell);
+        for (int blockRow = 0; blockRow < 3; blockRow++) {
+            for (int blockCol = 0; blockCol < 3; blockCol++) {
+                JPanel subGrid = new JPanel(new GridLayout(3, 3, GAP_INNER, GAP_INNER));
+                subGrid.setBackground(BOARD_BG);
+                subGrid.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+
+                for (int r = blockRow * 3; r < blockRow * 3 + 3; r++) {
+                    for (int c = blockCol * 3; c < blockCol * 3 + 3; c++) {
+                        JTextField cell = createCell(r, c);
+                        cells[r][c] = cell;
+                        subGrid.add(cell);
+                    }
+                }
+
+                boardPanel.add(subGrid);
             }
         }
-
         add(boardPanel, BorderLayout.CENTER);
+
         statusBar.setBorder(new EmptyBorder(5, 10, 5, 10));
         add(statusBar, BorderLayout.SOUTH);
     }
@@ -82,18 +96,16 @@ public class MainFrame extends JFrame {
         btn.setBackground(BUTTON_BG);
         btn.setForeground(BUTTON_FG);
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btn.setPreferredSize(new Dimension(120, 32));
+        btn.setPreferredSize(new Dimension(140, 32));
         btn.setContentAreaFilled(false);
         btn.setBorderPainted(false);
         btn.setOpaque(false);
 
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
-
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e) {
                 btn.setBackground(BUTTON_BG.darker());
             }
-
             @Override
             public void mouseExited(java.awt.event.MouseEvent e) {
                 btn.setBackground(BUTTON_BG);
@@ -122,7 +134,6 @@ public class MainFrame extends JFrame {
         final int r = row, c = col;
 
         cell.addFocusListener(new FocusAdapter() {
-
             @Override
             public void focusGained(FocusEvent e) {
                 highlight(r, c);
@@ -159,37 +170,22 @@ public class MainFrame extends JFrame {
             cells[row][i].setBackground(HIGHLIGHT_BG);
             cells[i][col].setBackground(HIGHLIGHT_BG);
         }
-
         int br = (row / 3) * 3, bc = (col / 3) * 3;
-
         for (int r = br; r < br + 3; r++)
             for (int c = bc; c < bc + 3; c++)
                 cells[r][c].setBackground(HIGHLIGHT_BG);
     }
 
-    /**
-     * Sets the text of a cell.
-     * @param row The row index of the cell.
-     * @param col The column index of the cell.
-     * @param text The text to set.
-     */
     private static class RoundButton extends JButton {
-        public RoundButton(String text) {
-            super(text);
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
+        public RoundButton(String text) { super(text); }
+        @Override protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setColor(getBackground());
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), ARC_WIDTH, ARC_HEIGHT);
-            g2.dispose();
-            super.paintComponent(g);
+            g2.dispose(); super.paintComponent(g);
         }
-
-        @Override
-        protected void paintBorder(Graphics g) {
+        @Override protected void paintBorder(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setColor(getBackground().darker());
@@ -197,27 +193,14 @@ public class MainFrame extends JFrame {
             g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, ARC_WIDTH, ARC_HEIGHT);
             g2.dispose();
         }
-
-        @Override
-        public boolean isContentAreaFilled() {
-            return false;
-        }
+        @Override public boolean isContentAreaFilled() { return false; }
     }
 
-    /**
-     * Custom border for the cell blocks.
-     */
     private static class CellBlockBorder extends javax.swing.border.AbstractBorder {
-        private final int row, col;
-        private static final int THICK = 2;
-        public CellBlockBorder(int row, int col) {
-            this.row = row; this.col = col;
-        }
-
-        @Override
-        public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setColor(Color.DARK_GRAY);
+        private final int row, col; private static final int THICK = 2;
+        public CellBlockBorder(int row, int col) { this.row = row; this.col = col; }
+        @Override public void paintBorder(Component c, Graphics g, int x, int y, int w, int h) {
+            Graphics2D g2 = (Graphics2D) g.create(); g2.setColor(Color.DARK_GRAY);
             int top    = (row % 3 == 0) ? THICK : 1;
             int bottom = (row == 8)       ? THICK : 1;
             int left   = (col % 3 == 0) ? THICK : 1;
@@ -229,5 +212,4 @@ public class MainFrame extends JFrame {
             g2.dispose();
         }
     }
-
 }
