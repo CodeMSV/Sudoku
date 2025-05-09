@@ -87,12 +87,12 @@ public class SudokuBoard {
 
 
 
-    public int getSolutionBoarGame(int row, int col) {
-        return solutionBoarGame[row][col];
+    public int getCurrentValue(int row, int col) {
+        return boardCurrentGame[row][col];
     }
 
-    public void setValue(int row, int col, int value) {
-        this.boardCurrentGame[row][col] = value;
+    public void setCurrentValue(int row, int col, int value) {
+        boardCurrentGame[row][col] = value;
     }
 
     public int getSolutionValue(int row, int col) {
