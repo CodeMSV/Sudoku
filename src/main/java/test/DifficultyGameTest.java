@@ -26,5 +26,12 @@ class DifficultyGameTest {
 
     @Test
     void valueOf() {
+        assertEquals(DifficultyGame.EASY, DifficultyGame.valueOf("EASY"), "The valueOf method should return the correct DifficultyGame enum for EASY");
+        assertEquals(DifficultyGame.MEDIUM, DifficultyGame.valueOf("MEDIUM"), "The valueOf method should return the correct DifficultyGame enum for MEDIUM");
+        assertEquals(DifficultyGame.HARD, DifficultyGame.valueOf("HARD"), "The valueOf method should return the correct DifficultyGame enum for HARD");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            DifficultyGame.valueOf("INVALID");
+        }, "The valueOf method should throw an exception for an invalid difficulty level");
     }
 }
