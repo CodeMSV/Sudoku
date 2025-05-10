@@ -167,8 +167,10 @@ public class SudokuController {
      */
     private void solveBoard() {
         for (int row = 0; row < 9; row++) {
+
             for (int col = 0; col < 9; col++) {
                 int sol = model.getSolutionValue(row, col);
+
                 model.setCurrentValue(row, col, sol);
                 JTextField cell = view.cells[row][col];
                 cell.setText(String.valueOf(sol));
@@ -176,6 +178,7 @@ public class SudokuController {
                 cell.setForeground(Color.RED);
             }
         }
+
         view.hintBtn.setEnabled(false);
         JOptionPane.showMessageDialog(view,
                 "Sudoku completado.",
