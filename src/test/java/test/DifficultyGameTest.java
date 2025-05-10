@@ -9,12 +9,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 class DifficultyGameTest {
+
 
     @BeforeEach
     void setUp(TestInfo info) {
         System.out.println("Running test: " + info.getDisplayName());
     }
+
 
     @ParameterizedTest(name = "{0} should remove {1} cells")
     @CsvSource({
@@ -38,6 +41,7 @@ class DifficultyGameTest {
         assertEquals(3, actualValues.length, "There should be 3 difficulty levels");
     }
 
+
     @Test
     @DisplayName("values() length should be 3")
     void values_lenght() {
@@ -45,6 +49,7 @@ class DifficultyGameTest {
         assertEquals(3, actualValues.length, "There should be 3 difficulty levels");
 
     }
+
 
     @Test
     @DisplayName("valueOf(String) returns correct enum for valid names")
@@ -56,6 +61,7 @@ class DifficultyGameTest {
 
         );
     }
+
 
     @Test
     @DisplayName("valueOf(null) throws NullPointerException")
