@@ -16,6 +16,7 @@ class SudokuBoardTest {
     private static int[][] solutionSolved;
     private SudokuBoard sudokuBoard;
 
+
     @BeforeAll
     static void initTemplate() {
         solutionSolved = new int[][]{
@@ -30,6 +31,7 @@ class SudokuBoardTest {
                 {3, 4, 5, 2, 8, 6, 1, 7, 9}
         };
     }
+
 
     @BeforeEach
     void setUp(TestInfo testInfo) {
@@ -63,6 +65,7 @@ class SudokuBoardTest {
         assertArrayEquals(solutionSolved, solutionAux);
     }
 
+
     @ParameterizedTest(name = "removeCells({0}) removes exactly {0} cells")
     @ValueSource(ints = {0, 1, 5, 81})
     @DisplayName("removeCells() remoces the given number of cells")
@@ -73,12 +76,14 @@ class SudokuBoardTest {
         assertZeros(removeCountCells, sudokuBoard);
     }
 
+
     @Test
     @DisplayName("isCorrect() returns true when current board matches solution")
     void isCorrect() {
-       sudokuBoard.resetGame(deepCopy(solutionSolved), 0);
-       assertTrue(sudokuBoard.isCorrect());
+        sudokuBoard.resetGame(deepCopy(solutionSolved), 0);
+        assertTrue(sudokuBoard.isCorrect());
     }
+
 
     @Test
     @DisplayName("isCorrect return flase when a cell is incorrect")
@@ -87,7 +92,6 @@ class SudokuBoardTest {
         sudokuBoard.setCurrentValue(0, 0, 1);
         assertFalse(sudokuBoard.isCorrect());
     }
-
 
 
     @Test
@@ -136,5 +140,4 @@ class SudokuBoardTest {
 
         return zeros;
     }
-
 }
