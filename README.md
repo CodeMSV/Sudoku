@@ -17,7 +17,7 @@
 6. [🎯 Objetivos del Proyecto](#objetivos-del-proyecto)
 7. [✅ Requisitos](#requisitos)
 8. [🔄 Diagramas](#diagramas)
-9. [🛠️ Desarrollo & Contribución](#desarrollo--contribución)
+9. [📐 Arquitectura del Sistema](#arquitectura-del-sistema)
 10. [📄 Licencia](#licencia)
 11. [📞 Contacto](#contacto)
 
@@ -174,9 +174,9 @@ flowchart TD
   Start([Inicio])
   SelectCell[/Seleccionar celda vacía/]
   InputValue[[Ingresar número 1 a 9]]
-  Validate{¿Valor válido?}
+  Validate{Valor válido?}
   ErrorInvalid((Mostrar error))
-  CheckComplete{¿Sudoku completado?}
+  CheckComplete{Sudoku completado?}
   Success[[Mostrar mensaje de éxito]]
   Reset[[Resetear tablero]]
 
@@ -189,6 +189,31 @@ flowchart TD
   CheckComplete -- Sí --> Success --> Reset
   Reset --> Start
 ```
+---
+
+## 📐 Arquitectura del Sistema
+
+El proyecto sigue el patrón **Modelo–Vista–Controlador (MVC)** y está organizado en capas:
+
+- **Capa de Presentación**  
+  Clases Swing (`MainFrame`, paneles y componentes gráficos).
+- **Capa de Control**  
+  `SudokuController`: coordina eventos de UI y lógica de negocio.
+- **Capa de Dominio**  
+  `SudokuBoard`, `DifficultyGame`, generadores (`SudokuGeneratorBackTrakingImp`), validaciones en tiempo real.
+
+
+---
+
+## 📚 Documentación del Código
+
+- Todas las clases incluyen **Javadoc** completo:
+    - Descripción de la responsabilidad de la clase (`@author`)
+    - Explicación de cada método (`@param`, `@return`, `@throws`)
+- Se genera documentación HTML con `mvn javadoc:javadoc` (salida en `target/site/apidocs`).
+- Además, los principales flujos y algoritmos (backtracking, validación en tiempo real) están documentados en Markdown bajo `docs/algoritmos/`.
+
+
 ---
 
 ## 🛠️ Desarrollo & Contribución
