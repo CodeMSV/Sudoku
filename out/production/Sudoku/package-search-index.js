@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.sudoku.controller"},{"l":"com.sudoku.model"},{"l":"com.sudoku.model.generatorGame"},{"l":"com.sudoku.view"}];updateSearchResults();
