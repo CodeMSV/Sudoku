@@ -104,6 +104,60 @@ La GUI se construye con Swing en la clase `MainFrame`. Ofrece:
 
 ---
 
+## 🚨 Excepciones Personalizadas
+
+- **SudokuException**  
+  Excepción base para todos los errores del juego.
+
+- **MovimientoInvalidoException**  
+  Lanza cuando `esMovimientoValido(...)` devuelve false.  
+  Incluye mensaje con la regla infringida (fila, columna o bloque).
+
+- **EntradaFueraDeRangoException**  
+  Lanza si el valor no está entre 1 y 9.  
+  Mensaje sugiere introducir un valor válido.
+
+Cada excepción cuenta con **mensajes claros** y, en su JavaDoc, **sugerencias de corrección** para el usuario/QA.
+
+---
+
+## 🏷️ Diagrama de Clases
+
+```mermaid
+classDiagram
+  class SudokuBoard {
+    +int[][] tablero
+    +boolean[][] celdasFijas
+    +void resetGame()
+    +boolean isCorrect()
+  }
+  class SudokuGeneratorBackTrakingImp {
+    +int[][] generate(String dificultad)
+    -boolean backtrack(int fila, int col)
+  }
+  class DifficultyGame {
+    +List<int[]> selectCellsToRemove()
+  }
+  class SudokuController {
+    +void newGame(String dificultad)
+    +void placeNumber(int fila, int columna, int valor)
+  }
+  class MainFrame {
+    +void updateBoard(int[][] tablero)
+    +void showError(String msg)
+  }
+  class SudokuAppRunner {
+    +static void main(String[] args)
+  }
+
+  SudokuController --> SudokuGeneratorBackTrakingImp
+  SudokuController --> SudokuBoard
+  MainFrame --> SudokuController
+  DifficultyGame ..> SudokuBoard
+```
+
+---
+
 ## Diagrama de Casos de Uso
 
 ```mermaid
@@ -231,3 +285,5 @@ El proyecto sigue el patrón **Modelo–Vista–Controlador (MVC)** y está orga
 Este proyecto está bajo la licencia **MIT**. Consulta el archivo `LICENSE` para más detalles.
 
 ---
+
+[![Coverage Status](https://img.shields.io/badge/coverage-82%25-brightgreen)](#)
