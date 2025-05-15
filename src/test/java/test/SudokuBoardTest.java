@@ -111,7 +111,6 @@ class SudokuBoardTest {
         assertEquals(solVal, sudokuBoard.getSolutionValue(row, col));
     }
 
-
     // Helper methods
 
     private static int[][] deepCopy(int[][] original) {

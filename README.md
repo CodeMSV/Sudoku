@@ -286,4 +286,4 @@ Este proyecto está bajo la licencia **MIT**. Consulta el archivo `LICENSE` para
 
 ---
 
-[![Coverage Status](https://img.shields.io/badge/coverage-82%25-brightgreen)](#)
+[![Coverage Status](https://img.shields.io/badge/coverage-74%25-brightgreen)](#)
