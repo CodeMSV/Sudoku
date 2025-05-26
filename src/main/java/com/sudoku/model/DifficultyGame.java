@@ -1,5 +1,7 @@
 package com.sudoku.model;
 
+import com.sudoku.exception.DifficultyNotFoundException;
+
 public enum DifficultyGame {
 
     EASY(35),
@@ -19,5 +21,16 @@ public enum DifficultyGame {
 
     public int getRemovedCells() {
         return removedCells;
+    }
+
+    public static DifficultyGame fromString(String name) {
+        if (name == null) {
+            throw new DifficultyNotFoundException("null");
+        }
+        try {
+            return valueOf(name.trim().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new DifficultyNotFoundException(name);
+        }
     }
 }

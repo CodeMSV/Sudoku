@@ -1,5 +1,7 @@
 package com.sudoku.model;
 
+import com.sudoku.exception.InvalidCellValueException;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -91,8 +93,12 @@ public class SudokuBoard {
         return boardCurrentGame[row][col];
     }
 
-    public void setCurrentValue(int row, int col, int value) {
+    public void setCurrentValue(int row, int col, int value) throws InvalidCellValueException {
+        if (value < 0 || value > 9) {
+            throw new InvalidCellValueException(row, col, value);
+        }
         boardCurrentGame[row][col] = value;
+
     }
 
     public int getSolutionValue(int row, int col) {

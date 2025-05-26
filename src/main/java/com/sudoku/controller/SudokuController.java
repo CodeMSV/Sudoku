@@ -1,5 +1,6 @@
 package com.sudoku.controller;
 
+import com.sudoku.exception.InvalidCellValueException;
 import com.sudoku.model.DifficultyGame;
 import com.sudoku.model.SudokuBoard;
 import com.sudoku.model.generatorGame.SudokuGenerator;
@@ -7,6 +8,8 @@ import com.sudoku.view.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class SudokuController {
 
@@ -32,6 +35,7 @@ public class SudokuController {
         view.checkBtn.addActionListener(e -> checkBoard());
         view.hintBtn.addActionListener(e -> giveHint());
         view.solveBtn.addActionListener(e -> solveBoard());
+        addCellListeners();
     }
 
 
@@ -108,11 +112,17 @@ public class SudokuController {
                 String valueText = view.cells[row][col].getText().trim();
 
                 try {
-                    model.setCurrentValue(row, col, Integer.parseInt(valueText));
-                } catch (NumberFormatException e) {
-                    model.setCurrentValue(row, col, 0);
+                    int value = valueText.isEmpty() ? 0 : Integer.parseInt(valueText);
+                    model.setCurrentValue(row, col, value);
+                } catch (NumberFormatException | InvalidCellValueException ex) {
+                    view.cells[row][col].setText("");
+                    JOptionPane.showMessageDialog(
+                            view,
+                            ex.getMessage(),
+                            "Valor no válido",
+                            JOptionPane.WARNING_MESSAGE
+                    );
                 }
-
             }
 
         }
@@ -181,8 +191,62 @@ public class SudokuController {
 
         view.hintBtn.setEnabled(false);
         JOptionPane.showMessageDialog(view,
-                "Sudoku completado.",
+                "Sudoky completado.",
                 "Solve",
                 JOptionPane.INFORMATION_MESSAGE);
     }
+
+    /**
+     * Adds action listeners to each cell in the Sudoku board.
+     */
+    private void addCellListeners() {
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                JTextField cell = view.cells[row][col];
+                attachCellListener(row, col, cell);
+            }
+        }
+    }
+
+    /**
+     * Attaches a listener to a cell that handles input and validation.
+     *
+     * @param row  The row index of the cell.
+     * @param col  The column index of the cell.
+     * @param cell The JTextField representing the cell.
+     */
+    private void attachCellListener(int row, int col, JTextField cell) {
+        cell.addActionListener(e -> handleCellInput(row, col, cell));
+        cell.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                handleCellInput(row, col, cell);
+            }
+        });
+    }
+
+    /**
+     * Handles the input for a cell, validating and updating the model.
+     *
+     * @param row  The row index of the cell.
+     * @param col  The column index of the cell.
+     * @param cell The JTextField representing the cell.
+     */
+    private void handleCellInput(int row, int col, JTextField cell) {
+        String text = cell.getText().trim();
+        try {
+            int value = text.isEmpty() ? 0 : Integer.parseInt(text);
+            model.setCurrentValue(row, col, value);
+            cell.setText(value == 0 ? "" : String.valueOf(value));
+        } catch (NumberFormatException | InvalidCellValueException ex) {
+            cell.setText("");
+            JOptionPane.showMessageDialog(
+                    view,
+                    ex.getMessage(),
+                    "Valor no válido",
+                    JOptionPane.WARNING_MESSAGE
+            );
+        }
+    }
+
 }

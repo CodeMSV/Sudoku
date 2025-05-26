@@ -3,13 +3,12 @@ package test;
 import com.sudoku.controller.SudokuController;
 import com.sudoku.model.DifficultyGame;
 import com.sudoku.model.SudokuBoard;
-import com.sudoku.model.generatorGame.SudokuGenerator;
 import com.sudoku.model.generatorGame.SudokuGeneratorBackTrakingImp;
 import com.sudoku.view.MainFrame;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
+
 import javax.swing.*;
-import java.awt.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
