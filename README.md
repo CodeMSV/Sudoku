@@ -125,36 +125,80 @@ Cada excepción cuenta con **mensajes claros** y, en su JavaDoc, **sugerencias d
 
 ```mermaid
 classDiagram
-  class SudokuBoard {
-    +int[][] tablero
-    +boolean[][] celdasFijas
-    +void resetGame()
-    +boolean isCorrect()
-  }
-  class SudokuGeneratorBackTrakingImp {
-    +int[][] generate(String dificultad)
-    -boolean backtrack(int fila, int col)
-  }
-  class DifficultyGame {
-    +List<int[]> selectCellsToRemove()
-  }
-  class SudokuController {
-    +void newGame(String dificultad)
-    +void placeNumber(int fila, int columna, int valor)
-  }
-  class MainFrame {
-    +void updateBoard(int[][] tablero)
-    +void showError(String msg)
-  }
-  class SudokuAppRunner {
-    +static void main(String[] args)
-  }
+    class Exe {
+        + main(args: String[]): void
+    }
+    class SudokuAppRunner {
+        - controller: SudokuController
+        + ejecutar(): void
+    }
+    class SudokuGenerator {
+        <<interface>>
+        + generate(difficulty: DifficultyGame): int[][]
+    }
+    class SudokuGeneratorBackTrakingImp {
+        + generate(difficulty: DifficultyGame): int[][]
+    }
+    class DifficultyGame {
+        <<enumeration>>
+        EASY
+        MEDIUM
+        HARD
+        + getRemovedCells(): int
+    }
+    class SudokuBoard {
+        - solutionBoardGame: int[][]
+        - boardCurrentGame: int[][]
+        + SudokuBoard(solutionSolved: int[][], difficulty: DifficultyGame)
+        + resetGame(newSolutionGame: int[][], removeCountCells: int)
+        + removeCells(countCellsToRemove: int): void
+        + isCorrect(): boolean
+        + getCurrentValue(row: int, col: int): int
+        + setCurrentValue(row: int, col: int, value: int): void
+        + getSolutionValue(row: int, col: int): int
+    }
+    class MainFrame {
+        + boardPanel: JPanel
+        + newGameBtn: JButton
+        + difficultyCombo: JComboBox<DifficultyGame>
+        + checkBtn: JButton
+        + hintBtn: JButton
+        + solveBtn: JButton
+        + cells: JTextField[][]
+        + MainFrame()
+    }
+    class SudokuController {
+        - model: SudokuBoard
+        - view: MainFrame
+        - generator: SudokuGenerator
+        - hintsRemaining: int
+        + SudokuController(model: SudokuBoard, view: MainFrame, generator: SudokuGenerator)
+        + initController(): void
+        + newGame(): void
+        + startGame(): void
+        + guessValue(row: int, col: int, value: int): void
+        + giveHint(): void
+        + checkComplete(): void
+        + completedGame(): void
+    }
 
-  SudokuController --> SudokuGeneratorBackTrakingImp
-  SudokuController --> SudokuBoard
-  MainFrame --> SudokuController
-  DifficultyGame ..> SudokuBoard
+    Exe ..> SudokuAppRunner : calls
+    SudokuAppRunner --> SudokuController : uses
+    SudokuAppRunner --> SudokuGenerator : instantiates
+    SudokuAppRunner --> DifficultyGame : selects
+    SudokuAppRunner --> SudokuBoard : creates
+    SudokuAppRunner --> MainFrame : initializes
+
+    SudokuGeneratorBackTrakingImp ..|> SudokuGenerator
+
+    SudokuController --> SudokuBoard : controls
+    SudokuController --> MainFrame : updates
+    SudokuController --> SudokuGenerator : generates
+
+    SudokuBoard --> DifficultyGame : parameter
+    MainFrame --> DifficultyGame : displays
 ```
+
 
 ---
 
